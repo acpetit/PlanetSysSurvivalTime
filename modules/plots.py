@@ -127,17 +127,16 @@ def comparison_hill_radius(mm0=np.logspace(-7,-3,100)):
 
     ov2pl = coef2pl*mm0**(2/7)
     ov3pl = coef3pl*mm0**.25
-    hill = (2/3*mm0)**(1/3)
-    hill_exact = (1-amdcrit.hill_circular_spacing(2*mm0))
+    hill = (2/3*mm0)**(1/3) #Normalized hill radius
+    hill_exact = 2*(1-amdcrit.hill_circular_spacing(2*mm0))/(1+amdcrit.hill_circular_spacing(2*mm0))
 
     fig,ax = plt.subplots(figsize=(4,3))
-    ax.plot(np.log10(mm0),2*3**.5*hill/hill,lw=1.5,ls='--',c='k')#label="Gladman Hill stability"
-    ax.plot(np.log10(mm0),hill_exact/hill,label="Exact Hill stability",lw=1.5)
-    ax.plot(np.log10(mm0),ov2pl/hill,label='2-pl. 1st order MMR overlap',lw=1.5)
-    ax.plot(np.log10(mm0),ov3pl/hill,label='3-pl. 0th order MMR overlap',lw=1.5)
-    #ax.plot(np.log10(mm0),ov3pl_fudge/hill,label='3-pl. MMR overlap\n larger width',lw=1.5)
+    ax.plot(np.log10(mm0),hill_exact/hill,label="Hill stability",lw=1.5)
+    ax.plot(np.log10(mm0),2*ov2pl/(2+ov2pl)/hill,label='2-pl. 1st order MMR overlap',lw=1.5)
+    ax.plot(np.log10(mm0),2*ov3pl/(2+ov3pl)/hill,label='3-pl. 0th order MMR overlap',lw=1.5)
+    #ax.plot(np.log10(mm0),2*ov3pl_fudge/(2+ov3pl_fudge)/hill,label='3-pl. MMR overlap\n larger width',lw=1.5)
 
-    ax.text(-5.5,6.2,r'$\propto\varepsilon^{-1/12}$',c='tab:green')
+    ax.text(-4.5,6.2,r'$\propto\varepsilon^{-1/12}$',c='tab:green')
     ax.text(-6,4.3,r'$\propto\varepsilon^{-1/21}$',c='tab:orange')
 
     ax.legend()
@@ -145,7 +144,7 @@ def comparison_hill_radius(mm0=np.logspace(-7,-3,100)):
     ax.set_ylim(2.5,10)
 
     ax.set_xlabel(r'Planet to star mass ratio $\log_{10}\varepsilon=\log_{10}\frac{m_p}{m_0}$')
-    ax.set_ylabel(r'Planet initial orbital separation in Hill radius')
+    ax.set_ylabel(r'Initial orbital separation in mutual Hill radius')
     return fig
 
 def exittime_distribution(u0s=np.linspace(0.1,0.5,5)):
