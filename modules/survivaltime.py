@@ -9,7 +9,8 @@ import scipy as sc
 def Tsurv(nu12,nu23,masses,m0=1.,fudge=1,res=False):
     """
     Main result from the paper. Return the survival time estimate as a function of the initial period ratios and masses (eq. 81).
-    In units of of the innermost orbit
+    In units of of the innermost orbit.
+    Returns np.inf if separation wide enough that 3-body MMRs don't overlap.
     
     nu12, nu23 : Initial period ratios
     masses : planet masses
@@ -22,10 +23,11 @@ def Tsurv(nu12,nu23,masses,m0=1.,fudge=1,res=False):
     al23 = nu23**(2/3)
     eta = nu12*(1-nu23)/(1-nu12*nu23)
     plsep = (1-al12)*(1-al23)/(2-al12-al23)
-    
 
+    if plsep > plsepov: 
+        return np.inf
+    
     Tnorm = 2**1.5/9*(plsep/plsepov)**6/(1-(plsep/plsepov)**4)*10**(-np.log(1-(plsep/plsepov)**4))
-        
     A = np.sqrt(38/pi)
     Mfac = get_Mfac(nu12,nu23,masses,m0)
     PrefacD = Mfac*nu12*A*np.sqrt(eta*(1-eta))*fudge**-2
