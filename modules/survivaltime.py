@@ -25,7 +25,7 @@ def Tsurv(nu12,nu23,masses,m0=1.,fudge=1,res=False):
     plsep = (1-al12)*(1-al23)/(2-al12-al23)
     
 
-    Tnorm = 2**1.5/9*(plsep/plsepov)**6/(1-(plsep/plsepov)**4)*10**(-np.log(1-(plsep/plsepov)**4))
+    Tnorm = 2**1.5/9*(plsep/plsepov)**6/(1-(plsep/plsepov)**4)*10**(np.sqrt(-np.log(1-(plsep/plsepov)**4)))
         
     A = np.sqrt(38/pi)
     Mfac = get_Mfac(nu12,nu23,masses,m0)
@@ -38,7 +38,7 @@ def Tsurv(nu12,nu23,masses,m0=1.,fudge=1,res=False):
         Tsurv = ((Detanorm)**2/(PrefacD)*Tnorm*3/2*u0**2*(1-u0)**2)
     else:
         Tsurv = (3/2)**2/PrefacD*Tnorm*3/32 #Deta=3/2 in units of plsep
-    return np.nan(Tsurv,nan=np.inf)
+    return np.nan_to_num(Tsurv,nan=np.inf)
     
 def Tnorm(nu12,nu23,masses,fudge=1,exact_F=True):
     "In unit of P_1"
@@ -53,7 +53,7 @@ def Tnorm(nu12,nu23,masses,fudge=1,exact_F=True):
         F = (1-sc.special.dawsn((xiov/2)**.5)/(xiov/2)**.5)**2
         Tnorm = xiov*(xiov+1)/(1-(plsep/plsepov)**4)*F
     else:
-        Tnorm = 2**1.5/9*(plsep/plsepov)**6/(1-(plsep/plsepov)**4)*10**(-np.log(1-(plsep/plsepov)**4))
+        Tnorm = 2**1.5/9*(plsep/plsepov)**6/(1-(plsep/plsepov)**4)*10**(np.sqrt(-np.log(1-(plsep/plsepov)**4)))
     return Tnorm
 
 
